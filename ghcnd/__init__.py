@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    ghcn
-    ~~~~
+    ghcnd
+    ~~~~~
 
     Global Historical Climate Network (GHCN) database parsing class.
 """
