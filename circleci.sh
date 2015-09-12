@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 i=0
 tox_args=()
@@ -10,4 +11,4 @@ for tox_env in $(tox -l); do
   ((i=i+1))
 done
 
-tox ${tox_args[@]}
+env PATH="$HOME/bin:$PATH" tox ${tox_args[@]}
