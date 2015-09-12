@@ -1,0 +1,17 @@
+machine:
+    python:
+        version: 2.7.10
+
+dependencies:
+    pre:
+        - ln -s ~/.pyenv/versions/2.6.8/bin/python2.6 ~/bin
+        - ln -s ~/.pyenv/versions/2.7.10/bin/python2.7 ~/bin
+        - ln -s ~/.pyenv/versions/3.3.3/bin/python3.3 ~/bin
+        - ln -s ~/.pyenv/versions/3.4.3/bin/python3.4 ~/bin
+    override:
+        - pip install -U pip
+        - pip install -U tox
+
+test:
+    override:
+        - env PATH="$HOME/bin:$PATH" tox
