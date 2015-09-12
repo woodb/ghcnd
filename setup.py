@@ -21,5 +21,5 @@ setup(
     ],
     keywords="global historical climatology network",
     packages=find_packages(exclude=["contrib", "docs", "tests*"]),
-    install_requires=["pandas==0.16.2"],
+    install_requires=["pandas>=0.16.2"],
 )
