@@ -1,10 +1,9 @@
 #!/bin/bash
 set -x
-set -e
 
 i=0
 tox_args=()
-for tox_env in $(tox -l); do
+for tox_env in $(tox -l | sort); do
   if [ $(($i % $CIRCLE_NODE_TOTAL)) -eq $CIRCLE_NODE_INDEX ]
   then
     tox_args+=" -e$tox_env"
