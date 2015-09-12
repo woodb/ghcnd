@@ -38,42 +38,40 @@ class GHCNParser(object):
     #:     GHCN database can be found in the `official README file associated
     #:     with GHCN
     #:     <http://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt>`_.
-    parameters = ["ACMC", "ACMH", "ACSC", "ACSH", "AWND", "DAEV", "DAPR",
-                  "DASF", "DATN", "DATX", "DAWM", "DWPR", "EVAP", "FMTM",
-                  "FRGB", "FRGT", "FRTH", "GAHT", "MDEV", "MDPR", "MDSF",
-                  "MDTN", "MDTX", "MDWM", "MNPN", "MXPN", "PGTM", "PRCP",
-                  "PSUN", "SN01", "SN02", "SN03", "SN04", "SN05", "SN06",
-                  "SN07", "SN11", "SN12", "SN13", "SN14", "SN15", "SN16",
-                  "SN17", "SN21", "SN22", "SN23", "SN24", "SN25", "SN26",
-                  "SN27", "SN31", "SN32", "SN33", "SN34", "SN35", "SN36",
-                  "SN37", "SN41", "SN42", "SN43", "SN44", "SN45", "SN46",
-                  "SN47", "SN51", "SN52", "SN53", "SN54", "SN55", "SN56",
-                  "SN57", "SN61", "SN62", "SN63", "SN64", "SN65", "SN66",
-                  "SN67", "SN71", "SN72", "SN73", "SN74", "SN75", "SN76",
-                  "SN77", "SN81", "SN82", "SN83", "SN84", "SN85", "SN86",
-                  "SN87", "SNOW", "SNWD", "SX01", "SX02", "SX03", "SX04",
-                  "SX05", "SX06", "SX07", "SX11", "SX12", "SX13", "SX14",
-                  "SX15", "SX16", "SX17", "SX21", "SX22", "SX23", "SX24",
-                  "SX25", "SX26", "SX27", "SX31", "SX32", "SX33", "SX34",
-                  "SX35", "SX36", "SX37", "SX41", "SX42", "SX43", "SX44",
-                  "SX45", "SX46", "SX47", "SX51", "SX52", "SX53", "SX54",
-                  "SX55", "SX56", "SX57", "SX61", "SX62", "SX63", "SX64",
-                  "SX65", "SX66", "SX67", "SX71", "SX72", "SX73", "SX74",
-                  "SX75", "SX76", "SX77", "SX81", "SX82", "SX83", "SX84",
-                  "SX85", "SX86", "SX87", "THIC", "TMAX", "TMIN", "TOBS",
-                  "TSUN", "WDF1", "WDF2", "WDF5", "WDFG", "WDFI", "WDFM",
-                  "WDMV", "WESD", "WESF", "WSF1", "WSF2", "WSF5", "WSFG",
-                  "WSFI", "WSFM", "WT01", "WT02", "WT03", "WT04", "WT05",
-                  "WT06", "WT07", "WT08", "WT09", "WT10", "WT11", "WT12",
-                  "WT13", "WT14", "WT15", "WT16", "WT17", "WT18", "WT19",
-                  "WT21", "WT22", "WV01", "WV03", "WV07", "WV18", "WV20"]
+    parameters = ["ACMC", "ACMH", "ACSC", "ACSH", "AWDR", "AWND", "DAEV",
+                  "DAPR", "DASF", "DATN", "DATX", "DAWM", "DWPR", "EVAP",
+                  "FMTM", "FRGB", "FRGT", "FRTH", "GAHT", "MDEV", "MDPR",
+                  "MDSF", "MDTN", "MDTX", "MDWM", "MNPN", "MXPN", "PGTM",
+                  "PRCP", "PSUN", "SN01", "SN02", "SN03", "SN04", "SN05",
+                  "SN06", "SN07", "SN11", "SN12", "SN13", "SN14", "SN15",
+                  "SN16", "SN17", "SN21", "SN22", "SN23", "SN24", "SN25",
+                  "SN26", "SN27", "SN31", "SN32", "SN33", "SN34", "SN35",
+                  "SN36", "SN37", "SN41", "SN42", "SN43", "SN44", "SN45",
+                  "SN46", "SN47", "SN51", "SN52", "SN53", "SN54", "SN55",
+                  "SN56", "SN57", "SN61", "SN62", "SN63", "SN64", "SN65",
+                  "SN66", "SN67", "SN71", "SN72", "SN73", "SN74", "SN75",
+                  "SN76", "SN77", "SN81", "SN82", "SN83", "SN84", "SN85",
+                  "SN86", "SN87", "SNOW", "SNWD", "SX01", "SX02", "SX03",
+                  "SX04", "SX05", "SX06", "SX07", "SX11", "SX12", "SX13",
+                  "SX14", "SX15", "SX16", "SX17", "SX21", "SX22", "SX23",
+                  "SX24", "SX25", "SX26", "SX27", "SX31", "SX32", "SX33",
+                  "SX34", "SX35", "SX36", "SX37", "SX41", "SX42", "SX43",
+                  "SX44", "SX45", "SX46", "SX47", "SX51", "SX52", "SX53",
+                  "SX54", "SX55", "SX56", "SX57", "SX61", "SX62", "SX63",
+                  "SX64", "SX65", "SX66", "SX67", "SX71", "SX72", "SX73",
+                  "SX74", "SX75", "SX76", "SX77", "SX81", "SX82", "SX83",
+                  "SX84", "SX85", "SX86", "SX87", "TAVG", "THIC", "TMAX",
+                  "TMIN", "TOBS", "TSUN", "WDF1", "WDF2", "WDF5", "WDFG",
+                  "WDFI", "WDFM", "WDMV", "WESD", "WESF", "WSF1", "WSF2",
+                  "WSF5", "WSFG", "WSFI", "WSFM", "WT01", "WT02", "WT03",
+                  "WT04", "WT05", "WT06", "WT07", "WT08", "WT09", "WT10",
+                  "WT11", "WT12", "WT13", "WT14", "WT15", "WT16", "WT17",
+                  "WT18", "WT19", "WT21", "WT22", "WV01", "WV03", "WV07",
+                  "WV18", "WV20"]
 
     #: Map of `parameters` to functions that will convert DLY formatted
     #: parameter values into to Python objects.
     parsers = {}
-
-    #: Names of the flags found in the GHNCD
-    flag_names = ["mflag", "sflag", "qflag"]
 
     def __init__(self, *args, **kwargs):
         self._init_parsers()
@@ -152,7 +150,7 @@ class GHCNParser(object):
 
     def parse_dly_row(self, ghcn_row):
         """Pythonifies the GHCN daily formatted row based on the specification
-        as defined by `get_dly_field_dict`
+        as defined by :meth:`dly_dict`
         """
 
         fields = self.dly_dict()
