@@ -14,4 +14,32 @@ dependencies:
 
 test:
     override:
-        - env PATH="$HOME/bin:$PATH" tox
+        - env PATH="$HOME/bin:$PATH" tox -eflake8
+        - env PATH="$HOME/bin:$PATH" tox -epy26-pandas_11
+        - env PATH="$HOME/bin:$PATH" tox -epy26-pandas_12
+        - env PATH="$HOME/bin:$PATH" tox -epy26-pandas_13
+        - env PATH="$HOME/bin:$PATH" tox -epy26-pandas_14
+        - env PATH="$HOME/bin:$PATH" tox -epy26-pandas_15
+        - env PATH="$HOME/bin:$PATH" tox -epy26-pandas_16
+        - env PATH="$HOME/bin:$PATH" tox -epy26-pandas_latest
+        - env PATH="$HOME/bin:$PATH" tox -epy27-pandas_11
+        - env PATH="$HOME/bin:$PATH" tox -epy27-pandas_12
+        - env PATH="$HOME/bin:$PATH" tox -epy27-pandas_13
+        - env PATH="$HOME/bin:$PATH" tox -epy27-pandas_14
+        - env PATH="$HOME/bin:$PATH" tox -epy27-pandas_15
+        - env PATH="$HOME/bin:$PATH" tox -epy27-pandas_16
+        - env PATH="$HOME/bin:$PATH" tox -epy27-pandas_latest
+        - env PATH="$HOME/bin:$PATH" tox -epy33-pandas_11
+        - env PATH="$HOME/bin:$PATH" tox -epy33-pandas_12
+        - env PATH="$HOME/bin:$PATH" tox -epy33-pandas_13
+        - env PATH="$HOME/bin:$PATH" tox -epy33-pandas_14
+        - env PATH="$HOME/bin:$PATH" tox -epy33-pandas_15
+        - env PATH="$HOME/bin:$PATH" tox -epy33-pandas_16
+        - env PATH="$HOME/bin:$PATH" tox -epy33-pandas_latest
+        - env PATH="$HOME/bin:$PATH" tox -epy34-pandas_11
+        - env PATH="$HOME/bin:$PATH" tox -epy34-pandas_12
+        - env PATH="$HOME/bin:$PATH" tox -epy34-pandas_13
+        - env PATH="$HOME/bin:$PATH" tox -epy34-pandas_14
+        - env PATH="$HOME/bin:$PATH" tox -epy34-pandas_15
+        - env PATH="$HOME/bin:$PATH" tox -epy34-pandas_16
+        - env PATH="$HOME/bin:$PATH" tox -epy34-pandas_latest
