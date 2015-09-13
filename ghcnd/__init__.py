@@ -26,7 +26,40 @@ def _HHMM(x):
     return _RAW(x)
 
 
+def get_field_template():
+    """Template of fields, columns and type-casting functions of the
+    GHCN-daily formatted file (dly)
+
+    :returns: dictionary of fields, columns and type-casting function per
+                row of GHCN daily (dly) file
+    :rtype: :class:`dict`
+
+    """
+    fields = {
+        "id": (1, 11, str),
+        "year": (12, 15, int),
+        "month": (16, 17, int),
+        "element": (18, 21, str),
+    }
+
+    value_fields = {
+        "value": (22, 26, int),
+        "mflag": (27, 27, str),
+        "qflag": (28, 28, str),
+        "sflag": (29, 29, str),
+    }
+
+    for day in range(31):
+        for f in value_fields:
+            fields[f + str(day + 1)] = (value_fields[f][0] + day * 8,
+                                        value_fields[f][1] + day * 8,
+                                        value_fields[f][2])
+
+    return fields
+
+
 class GHCNParser(object):
+
     #: List of all possible parameters that could be found within the GHCN
     #: database, per the 3.11 documentation.
     #:
@@ -70,6 +103,9 @@ class GHCNParser(object):
     #: Map of `parameters` to functions that will convert DLY formatted
     #: parameter values into to Python objects.
     parsers = {}
+
+    #: Template of fields, essentially defines DLY format
+    _field_template = get_field_template()
 
     def __init__(self, *args, **kwargs):
         self._init_parsers()
@@ -133,17 +169,13 @@ class GHCNParser(object):
         return data
 
     def parse_dly_row(self, ghcn_row):
-        """Pythonifies the GHCN daily formatted row based on the specification
-        as defined by :meth:`dly_dict`
+        """Pythonifies the GHCN daily formatted row based on the specification.
         """
-
-        fields = self.dly_dict()
-
         results = {}
-        for param in fields:
-            idx0 = fields[param][0] - 1
-            idx1 = fields[param][1]
-            parsing_fn = fields[param][2]
+        for param in self._field_template:
+            idx0 = self._field_template[param][0] - 1
+            idx1 = self._field_template[param][1]
+            parsing_fn = self._field_template[param][2]
 
             results[param] = parsing_fn(ghcn_row[idx0:idx1].strip())
 
@@ -152,34 +184,3 @@ class GHCNParser(object):
                 results[param] = None
 
         return results
-
-    def dly_dict(self):
-        """Template of fields, columns and type-casting functions of the
-        GHCN-daily formatted file (dly)
-
-        :returns: dictionary of fields, columns and type-casting function per
-                  row of GHCN daily (dly) file
-        :rtype: :class:`dict`
-
-        """
-        fields = {
-            "id": (1, 11, str),
-            "year": (12, 15, int),
-            "month": (16, 17, int),
-            "element": (18, 21, str),
-        }
-
-        value_fields = {
-            "value": (22, 26, int),
-            "mflag": (27, 27, str),
-            "qflag": (28, 28, str),
-            "sflag": (29, 29, str),
-        }
-
-        for day in range(31):
-            for f in value_fields:
-                fields[f + str(day + 1)] = (value_fields[f][0] + day * 8,
-                                            value_fields[f][1] + day * 8,
-                                            value_fields[f][2])
-
-        return fields
