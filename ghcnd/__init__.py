@@ -6,7 +6,7 @@
     Global Historical Climate Network (GHCN) database parsing class.
 """
 from calendar import monthrange
-from datetime import datetime
+from datetime import date
 
 
 def _RAW(x):
@@ -114,7 +114,6 @@ class GHCNParser(object):
         """Initialize parameter/parsing function pairs.
 
         Functions for parsing variables from the DLY format.
-
         """
         self.parsers = {}
 
@@ -140,31 +139,6 @@ class GHCNParser(object):
         for param in ["FMTM", "PGTM"]:
             self.parsers[param] = _HHMM
 
-    def read(self, filename):
-        """Read GHCN formatted files into a native data structure or object.
-        """
-        data = []
-        with open(filename, "r") as fh:
-            for r in fh:
-                n = self.parse(r)
-                days_in_month = monthrange(n["year"], n["month"])[1]
-
-                for day in range(days_in_month):
-                    idd = n["id"]
-                    dt = datetime(n["year"], n["month"], day + 1)
-                    param = n["element"]
-
-                    # apply parsing function to pull it into reality
-                    fn = self.parsers[param]
-                    vl = fn(float(n["value" + str(day + 1)]))
-
-                    sf = n["sflag" + str(day + 1)]
-                    mf = n["mflag" + str(day + 1)]
-                    qf = n["qflag" + str(day + 1)]
-
-                    data.append((idd, dt, param, vl, sf, mf, qf))
-        return data
-
     def parse(self, raw_str):
         """Pythonifies the GHCN daily formatted row based on the specification.
         """
@@ -180,4 +154,27 @@ class GHCNParser(object):
             if (results[param] == -9999) or (results[param] == ""):
                 results[param] = None
 
-        return results
+        days_in_month = monthrange(results["year"], results["month"])[1]
+        for day in range(days_in_month):
+            _id = results["id"]
+            dt = date(results["year"], results["month"], day + 1)
+            param = results["element"]
+
+            # Apply parsing function to pull it into reality
+            parsing_fn = self.parsers[param]
+            value = parsing_fn(float(results["value" + str(day + 1)]))
+
+            # Grab any flags on the data that were available
+            sflag = results["sflag" + str(day + 1)]
+            mflag = results["mflag" + str(day + 1)]
+            qflag = results["qflag" + str(day + 1)]
+
+            yield _id, dt, param, value, sflag, mflag, qflag
+
+    def read(self, filename):
+        """Read GHCN formatted files into a native data structure or object.
+        """
+        with open(filename, "r") as fh:
+            for raw_str in fh:
+                for result in self.parse(raw_str):
+                    yield result
