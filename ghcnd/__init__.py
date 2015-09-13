@@ -155,21 +155,21 @@ class GHCNParser(object):
                 results[param] = None
 
         days_in_month = monthrange(results["year"], results["month"])[1]
-        for day in range(days_in_month):
+        for day in range(1, days_in_month + 1):
             _id = results["id"]
-            dt = date(results["year"], results["month"], day + 1)
+            dt = date(results["year"], results["month"], day)
             param = results["element"]
 
             # Apply parsing function to pull it into reality
-            value = None
-            if results["value" + str(day + 1)] is not None:
+            value = results["value%d" % dt.day]
+            if value is not None:
                 parsing_fn = self.parsers[param]
-                value = parsing_fn(float(results["value" + str(day + 1)]))
+                value = parsing_fn(float(value))
 
             # Grab any flags on the data that were available
-            sflag = results["sflag" + str(day + 1)]
-            mflag = results["mflag" + str(day + 1)]
-            qflag = results["qflag" + str(day + 1)]
+            sflag = results["sflag%d" % dt.day]
+            mflag = results["mflag%d" % dt.day]
+            qflag = results["qflag%d" % dt.day]
 
             yield _id, dt, param, value, sflag, mflag, qflag
 
