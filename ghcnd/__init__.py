@@ -161,8 +161,10 @@ class GHCNParser(object):
             param = results["element"]
 
             # Apply parsing function to pull it into reality
-            parsing_fn = self.parsers[param]
-            value = parsing_fn(float(results["value" + str(day + 1)]))
+            value = None
+            if results["value" + str(day + 1)] is not None:
+                parsing_fn = self.parsers[param]
+                value = parsing_fn(float(results["value" + str(day + 1)]))
 
             # Grab any flags on the data that were available
             sflag = results["sflag" + str(day + 1)]
