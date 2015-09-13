@@ -8,8 +8,6 @@
 from calendar import monthrange
 from datetime import datetime
 
-import pandas
-
 
 def _RAW(x):
     return x
@@ -110,43 +108,29 @@ class GHCNParser(object):
         """Read GHCN formatted files into a native data structure or object.
         """
 
-        index_tuples = []
         data = []
 
-        fh = open(filename, "r")
+        with open(filename, "r") as fh:
+            for r in fh:
+                n = self.parse_dly_row(r)
+                days_in_month = monthrange(n["year"], n["month"])[1]
 
-        for r in fh:
-            n = self.parse_dly_row(r)
-            days_in_month = monthrange(n["year"], n["month"])[1]
+                for day in range(days_in_month):
+                    idd = n["id"]
+                    dt = datetime(n["year"], n["month"], day + 1)
+                    param = n["element"]
 
-            for day in range(days_in_month):
-                idd = n["id"]
-                dt = datetime(n["year"], n["month"], day + 1)
-                param = n["element"]
+                    # apply parsing function to pull it into reality
+                    fn = self.parsers[param]
+                    vl = fn(float(n["value" + str(day + 1)]))
 
-                # apply parsing function to pull it into reality
-                fn = self.parsers[param]
-                vl = fn(float(n["value" + str(day + 1)]))
+                    sf = n["sflag" + str(day + 1)]
+                    mf = n["mflag" + str(day + 1)]
+                    qf = n["qflag" + str(day + 1)]
 
-                sf = n["sflag" + str(day + 1)]
-                mf = n["mflag" + str(day + 1)]
-                qf = n["qflag" + str(day + 1)]
+                    data.append((idd, dt, param, vl, sf, mf, qf))
 
-                index_tuples.append((idd, dt, param))
-                data.append([vl, sf, mf, qf])
-
-        fh.close()
-
-        df = pandas.DataFrame(
-            data,
-            index=pandas.MultiIndex.from_tuples(
-                index_tuples,
-                names=["id", "dt", "parameter"]
-            ),
-            columns=["value", "sflag", "mflag", "qflag"]
-        )
-
-        return df
+        return data
 
     def parse_dly_row(self, ghcn_row):
         """Pythonifies the GHCN daily formatted row based on the specification
