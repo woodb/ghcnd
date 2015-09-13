@@ -21,4 +21,8 @@ def test_instantiation_of_parser():
         assert dt.month == 9
         assert dt.year == 2014
         assert dt.day == day
+        assert param == "PRCP"
+        assert sflag == "N" or sflag is None
+        assert mflag == "T" or mflag is None
+        assert qflag is None
         day += 1
