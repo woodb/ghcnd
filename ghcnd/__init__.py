@@ -143,12 +143,10 @@ class GHCNParser(object):
     def read(self, filename):
         """Read GHCN formatted files into a native data structure or object.
         """
-
         data = []
-
         with open(filename, "r") as fh:
             for r in fh:
-                n = self.parse_dly_row(r)
+                n = self.parse(r)
                 days_in_month = monthrange(n["year"], n["month"])[1]
 
                 for day in range(days_in_month):
@@ -165,10 +163,9 @@ class GHCNParser(object):
                     qf = n["qflag" + str(day + 1)]
 
                     data.append((idd, dt, param, vl, sf, mf, qf))
-
         return data
 
-    def parse_dly_row(self, ghcn_row):
+    def parse(self, raw_str):
         """Pythonifies the GHCN daily formatted row based on the specification.
         """
         results = {}
@@ -177,7 +174,7 @@ class GHCNParser(object):
             idx1 = self._field_template[param][1]
             parsing_fn = self._field_template[param][2]
 
-            results[param] = parsing_fn(ghcn_row[idx0:idx1].strip())
+            results[param] = parsing_fn(raw_str[idx0:idx1].strip())
 
             # Convert GHCN missing value to Python understood missing value
             if (results[param] == -9999) or (results[param] == ""):
